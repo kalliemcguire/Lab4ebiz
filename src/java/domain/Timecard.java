@@ -1,7 +1,10 @@
 package domain;
 
 import database.TimecardDA;
+import exceptions.DuplicateException;
+import exceptions.RecordNotFoundException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 
@@ -23,7 +26,7 @@ public class Timecard implements Serializable{
         this.setOvertimeHours(0.0);
     }
     
-    public void add() {
+    public void add() throws SQLException, DuplicateException{
         TimecardDA.add(this);
     }
     
@@ -31,7 +34,7 @@ public class Timecard implements Serializable{
         TimecardDA.delete(this);
     }
     
-    public static Timecard find(int id){
+    public static Timecard find(int id) throws RecordNotFoundException{
         return TimecardDA.find(id);
     }
 
@@ -52,11 +55,11 @@ public class Timecard implements Serializable{
         return employeeID;
     }
     
-    public static ArrayList<Timecard> getEmployeeTimecards(int ID){
+    public static ArrayList<Timecard> getEmployeeTimecards(int ID) throws SQLException{
         return TimecardDA.getEmployeeTimecards(ID);
     }
     
-    public static ArrayList<Timecard> getEmployeeTimecards(int ID, Date begDate, Date endDate) {
+    public static ArrayList<Timecard> getEmployeeTimecards(int ID, Date begDate, Date endDate)throws SQLException {
         return TimecardDA.getEmployeeTimecards(ID, begDate, endDate);
     }
     
@@ -108,7 +111,7 @@ public class Timecard implements Serializable{
         return getDateFormatted() + "  " + employeeID + "  " + hoursWorked + "  " + overtimeHours;
     }
     
-    public void update(){
+    public void update() throws RecordNotFoundException{
         TimecardDA.update(this);
     }
 }

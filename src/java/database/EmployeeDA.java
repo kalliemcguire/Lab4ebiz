@@ -30,7 +30,7 @@ public class EmployeeDA {
         
         String sqlString = "Select Employee_ID, Employee_Type, First_Name, Last_Name, SSN, User_ID, Password"
                 + " From Employee"
-                + " Where Employee_ID = '" + ID + "'";
+                + " Where Employee_ID = " + ID;
         System.out.println("sqlString = " + sqlString);
         
         Connection connection = PayrollSystemDA.getConnection();
@@ -50,11 +50,11 @@ public class EmployeeDA {
             SSN = rs.getLong(5);
             user = rs.getString(6);
             pw = rs.getString(7);
-            
-            if(empID == ID && empType == Employee.HOURLY)
-                emp = new SalaryEmployee();
-            else if(empID == ID && empType == Employee.SALARY)
-                emp = new HourlyEmployee();
+//dont know if i need this 
+//            if(empID == ID && empType == Employee.HOURLY)
+//                emp = new SalaryEmployee();
+//            else if(empID == ID && empType == Employee.SALARY)
+//                emp = new HourlyEmployee();
             
             emp.setEmployeeID(empID);
             emp.setEmployeeType(empType);

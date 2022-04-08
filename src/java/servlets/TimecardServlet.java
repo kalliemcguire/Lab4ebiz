@@ -3,12 +3,16 @@ package servlets;
 import domain.PayrollSystem;
 import domain.Employee;
 import domain.Timecard;
+import exceptions.DuplicateException;
+import exceptions.RecordNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.DateFormat;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +24,7 @@ public class TimecardServlet extends HttpServlet {
     private static DateFormat dateFormatShort = DateFormat.getDateInstance(DateFormat.SHORT);
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException, RecordNotFoundException, DuplicateException {
         response.setContentType("text/html;charset=UTF-8");
         
         String idString;
@@ -129,7 +133,15 @@ public class TimecardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(TimecardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RecordNotFoundException ex) {
+            Logger.getLogger(TimecardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DuplicateException ex) {
+            Logger.getLogger(TimecardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -143,7 +155,15 @@ public class TimecardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(TimecardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RecordNotFoundException ex) {
+            Logger.getLogger(TimecardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DuplicateException ex) {
+            Logger.getLogger(TimecardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

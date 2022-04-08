@@ -18,7 +18,7 @@ CREATE TABLE Employee (
 INSERT INTO Employee 
   (Employee_ID, Employee_Type, First_Name, Last_Name, SSN, User_ID, Password)
 VALUES 
-  (1001, 1, 'Bob', 'Smith', 555121234, 'x', 'x'),
+  (1001, 1, 'Bob', 'Smith', 555121234, 'User1', 'user1'),
   (1002, 1, 'Jane', 'Doe', 555124321, 'User2', 'user2'),
   (1003, 2, 'John', 'Doe', 333125678, 'User3', 'user3'),
   (1004, 2, 'James', 'Wilson', 444342345, 'User4', 'user4');
@@ -61,6 +61,6 @@ INSERT INTO Timecard
   (Timecard_Date, Employee_ID, Hours_Worked, Overtime_Hours)
 VALUES
   ('03/25/2020', 1001, 8, 2.5),
-  ('03/25/2020', 1001, 8, 1.0),
+  ('03/26/2020', 1001, 8, 1.0),
   ('03/25/2020', 1002, 8, 2.75),
   ('03/26/2020', 1002, 8, 1.75);
