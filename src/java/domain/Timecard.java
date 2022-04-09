@@ -1,12 +1,12 @@
 package domain;
 
 import database.TimecardDA;
-import exceptions.DuplicateException;
-import exceptions.RecordNotFoundException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
@@ -26,20 +26,25 @@ public class Timecard implements Serializable{
         this.setOvertimeHours(0.0);
     }
     
-    public void add() throws SQLException, DuplicateException{
+    public void add() throws SQLException {
         TimecardDA.add(this);
     }
     
-    public void delete(){
+    public void delete() throws SQLException {
         TimecardDA.delete(this);
     }
     
-    public static Timecard find(int id) throws RecordNotFoundException{
+    public static Timecard find(int id) throws SQLException{
         return TimecardDA.find(id);
     }
 
     public Date getDate() {
         return date;
+    }
+    
+    public String getSimpleDate(){
+        SimpleDateFormat simple = new SimpleDateFormat("MM/dd/yyyy");
+        return simple.format(date);
     }
     
     public String getDateShort(){
@@ -111,7 +116,7 @@ public class Timecard implements Serializable{
         return getDateFormatted() + "  " + employeeID + "  " + hoursWorked + "  " + overtimeHours;
     }
     
-    public void update() throws RecordNotFoundException{
+    public void update() throws SQLException{
         TimecardDA.update(this);
     }
 }

@@ -3,6 +3,7 @@ package domain;
 import database.EmployeeDA;
 import exceptions.RecordNotFoundException;
 import java.io.Serializable;
+import java.sql.SQLException;
 
 import java.util.Date;
 
@@ -21,11 +22,11 @@ public abstract class Employee implements Serializable{
     
     public Employee(){}
     
-    public void add() {
+    public void add() throws SQLException{
         EmployeeDA.add(this);
     }
     
-    public double calculateGrossPay(Date date) {
+    public double calculateGrossPay(Date date) throws SQLException {
         return 0.0;
     }
     

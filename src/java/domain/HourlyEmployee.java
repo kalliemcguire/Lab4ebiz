@@ -1,5 +1,6 @@
 package domain;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +9,7 @@ public class HourlyEmployee extends Employee{
     private double hourlyRate;
     private double overtimeRate;
     
-    public double calculateGrossPay(Date date){
+    public double calculateGrossPay(Date date) throws SQLException{
         ArrayList<Timecard> timecards;
         Timecard timecard;
         Date beginDate, endDate, timecardDate;

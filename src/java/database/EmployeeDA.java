@@ -6,6 +6,7 @@ import domain.SalaryEmployee;
 import exceptions.RecordNotFoundException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
@@ -14,8 +15,33 @@ public class EmployeeDA {
     
     private static ArrayList<Employee> employees = new ArrayList<Employee>(5);
     
-    public static void add(Employee emp) {
-        employees.add(emp);
+    public static void add(Employee emp) throws SQLException{
+        int empID = emp.getEmployeeID();
+        int empType = emp.getEmployeeType();
+        String fn = emp.getFirstName();
+        String ln = emp.getLastName();
+        long SSN = emp.getSSN();
+        String uID = emp.getUserID();
+        String pw = emp.getPassword();
+        
+        String sqlInsert = "INSERT INTO EMPLOYEE " +
+                "(Employee_ID, Employee_Type, First_Name, Last_Name, SSN, User_ID, Password) " +
+                "VALUES (" + empID + ", " + empType + ", '" + fn + "' , '" + ln + "' , " + SSN +
+                ", '" + uID + "', '" + pw + "')";
+        System.out.println("sqlInsert employee add " + sqlInsert);
+        
+        Connection connection = PayrollSystemDA.getConnection();
+        System.out.println(connection);
+        Statement statement;
+        
+        try {
+            statement = connection.createStatement();
+            statement.execute(sqlInsert);  
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+        
     }
     
     public static Employee find(int ID) throws RecordNotFoundException{
@@ -74,8 +100,6 @@ public class EmployeeDA {
         return emp;
     }
     
-    
-    //todo: set up private static methods for hourly and salary tables
     public static Employee findByUserID(String userID) throws RecordNotFoundException{
         Employee employee = null;
         int empID;
@@ -86,9 +110,9 @@ public class EmployeeDA {
         String u_ID;
         String pass;
         
-        String sqlString = "Select Employee_ID, Employee_Type, First_Name, Last_Name, SSN, User_ID, Password"
-                + " From Employee"
-                + " Where User_ID = '" + userID + "'";
+        String sqlString = "SELECT *"
+                + " FROM Employee"
+                + " WHERE User_ID = '" + userID + "'";
         System.out.println("sqlString = " + sqlString);
         
         Connection connection = PayrollSystemDA.getConnection();
@@ -131,6 +155,57 @@ public class EmployeeDA {
         }
         
         return employee;
+    }
+    
+    public static void delete(Employee emp) throws RecordNotFoundException{
+        int empID = emp.getEmployeeID();
+        
+        String sqlDelete = "DELETE FROM Employee WHERE Employee_ID = " + empID;
+        
+        System.out.println("sqlDelete query " + sqlDelete);
+        
+        Connection connection = PayrollSystemDA.getConnection();
+        System.out.println(connection);
+        Statement statement;
+        
+        try {
+            statement = connection.createStatement();
+            statement.execute(sqlDelete);
+        } catch(Exception e) {
+           System.out.println("Exception " + e);
+           RecordNotFoundException ex = new RecordNotFoundException("Employee " + empID + " not found.");
+           throw ex; 
+        }
+    }
+    
+    public static void update(Employee emp) throws RecordNotFoundException{
+        int empID = emp.getEmployeeID();
+        int empType = emp.getEmployeeType();
+        String fn = emp.getFirstName();
+        String ln = emp.getLastName();
+        long SSN = emp.getSSN();
+        String uID = emp.getUserID();
+        String pw = emp.getPassword();
+        
+        String sqlUpdate = "UPDATE Employee " +
+                "SET Employee_ID = " + empID + ", Employee_Type = " + empType + ", First_Name = '" + fn + "', Last_Name = '" +
+                ln + "', SSN = " + SSN + ", User_ID = '" + uID + "', Password = '" + pw + "'" +
+                " WHERE Employee_ID = " + empID;
+        
+        System.out.println("sqlUpdate " + sqlUpdate);
+        
+        Connection connection = PayrollSystemDA.getConnection();
+        System.out.println(connection);
+        Statement statement;
+        
+        try {
+            statement = connection.createStatement();
+            statement.execute(sqlUpdate);
+        } catch(Exception e) {
+           System.out.println("Exception " + e);
+           RecordNotFoundException ex = new RecordNotFoundException("Employee " + empID + " not found.");
+           throw ex;
+        }
     }
     
     public static void initialize(){

@@ -3,6 +3,7 @@ package domain;
 import database.PayrollDA;
 import exceptions.RecordNotFoundException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.DateFormat;
 
 import java.text.NumberFormat;
@@ -25,7 +26,7 @@ public class Payroll implements Serializable{
         PayrollDA.add(this);
     }
     
-    public static void calculatePayroll(Date date) {
+    public static void calculatePayroll(Date date) throws SQLException{
         ArrayList<Employee> employees = Employee.getEmployees();
         ArrayList<WithholdingType>withholdingTypes = WithholdingType.getWithholdingTypes(); 
         
